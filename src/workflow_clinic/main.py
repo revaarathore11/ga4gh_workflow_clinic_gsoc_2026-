@@ -13,7 +13,7 @@ app = typer.Typer(
 @app.callback()
 def main():
     """Workflow Clinic CLI tool."""
-    pass
+
 
 
 if __name__ == "__main__":

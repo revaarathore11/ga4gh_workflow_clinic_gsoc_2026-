@@ -90,27 +90,6 @@ ruff check .
 ruff format .
 ```
 
-## Project Structure
-
-```
-├── .github/workflows/     # GitHub Actions CI
-├── docs/                  # Research and architecture documents
-├── fixtures/              # Benchmark workflows
-├── src/workflow_clinic/   # Main source code
-├── tests/                 # Automated tests
-├── pyproject.toml
-└── README.md
-```
-
-## Documentation
-
-Project documentation is organized into:
-
-```
-docs/research/             # Paper notes and literature review
-docs/architecture/         # Design documents and specifications
-docs/workflow-analysis/    # Manual workflow analysis reports
-```
 
 ## Supported Workflow Languages
 
@@ -151,4 +130,4 @@ Workflow Clinic is being designed with future compatibility in mind for:
 
 ## License
 
-Apache License 2.0
+This project is licensed under the [Apache License 2.0](LICENSE).
