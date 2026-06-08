@@ -15,6 +15,5 @@ def main():
     """Workflow Clinic CLI tool."""
 
 
-
 if __name__ == "__main__":
     app()
