@@ -28,8 +28,7 @@ Snakemake → WorkflowBundle
 Once converted, all downstream components operate on WorkflowBundle instead of
 language-specific syntax.
 
-This idea is inspired by the DAW Metamodel paper, which proposes a common representation
-for different workflow languages.
+This idea is inspired by the DAW Metamodel paper (Hilbrich et al., 2022; [PDF](https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/3712c6d8-2bef-4528-ad75-1c4b3e667c3e/content)), which proposes a common representation for different workflow languages.
 
 > All workflow languages are converted into a common WorkflowBundle representation before
 > analysis. All downstream components operate on WorkflowBundle rather than language-specific
