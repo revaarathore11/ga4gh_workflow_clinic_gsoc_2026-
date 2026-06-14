@@ -30,5 +30,5 @@ We are currently building out the core models, tests, and base developer governa
 ## 📖 Navigation
 
 * Explore the [Architecture Overview](architecture/architecture.md) to understand the intermediate models and packages.
-* Review the [Contributing Guidelines](CONTRIBUTING.md) to set up your local development environment.
-* View the [Code of Conduct](CODE_OF_CONDUCT.md) to understand our community standards.
+* Review the [Contributing Guidelines](https://github.com/ga4gh/ga4gh_workflow_clinic_gsoc_2026/blob/main/CONTRIBUTING.md) to set up your local development environment.
+* View the [Code of Conduct](https://github.com/ga4gh/ga4gh_workflow_clinic_gsoc_2026/blob/main/CODE_OF_CONDUCT.md) to understand our community standards.
