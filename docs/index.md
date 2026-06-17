@@ -28,5 +28,5 @@ Workflow Clinic is an AI-powered tool designed to simplify, automate, and optimi
 
 Workflow Clinic is an open-source project initiated during **Google Summer of Code (GSoC) 2026** under the **Global Alliance for Genomics and Health (GA4GH)** organization.
 
-The project is developed under the formal governance of **GA4GH**. We align with open-source community standards and welcome contributions from developers of all backgrounds. Please refer to our [Contributing Guidelines](https://github.com/ga4gh/ga4gh_workflow_clinic_gsoc_2026/blob/main/CONTRIBUTING.md) to get started.
+The project is developed under the formal governance of **GA4GH**. We align with open-source community standards and welcome contributions from developers of all backgrounds. Please refer to our [Contributing Guidelines](https://github.com/ga4gh/ga4gh_workflow_clinic_gsoc_2026/blob/main/CONTRIBUTING.md) and [Code of Conduct](https://github.com/ga4gh/ga4gh_workflow_clinic_gsoc_2026/blob/main/CODE_OF_CONDUCT.md) to get started.
 
