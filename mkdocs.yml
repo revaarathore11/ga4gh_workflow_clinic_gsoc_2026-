@@ -27,7 +27,7 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
   features:
-    - navigation.tabs
+    - navigation.footer
     - navigation.sections
     - navigation.expand
     - navigation.top
@@ -53,8 +53,9 @@ markdown_extensions:
   - toc:
       permalink: true
 
+plugins:
+  - search
+
 nav:
   - Home: index.md
   - Architecture: architecture/architecture.md
-  - Contributing: CONTRIBUTING.md
-  - Code of Conduct: CODE_OF_CONDUCT.md
