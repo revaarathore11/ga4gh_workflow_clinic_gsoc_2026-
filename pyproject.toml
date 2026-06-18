@@ -36,12 +36,9 @@ dev = [
     "vulture>=2.11",
     "mkdocs>=1.6",
     "mkdocs-material>=9.5",
-<<<<<<< HEAD
     "mkdocstrings[python]>=0.24.0",
-=======
     "python-semantic-release>=9.0.0",
     "build>=1.0.0",
->>>>>>> 0adcbe4 (docs: setup API reference and release pipeline)
 ]
 
 [project.scripts]
