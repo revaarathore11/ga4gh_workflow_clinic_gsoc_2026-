@@ -332,6 +332,17 @@ results = store.retrieve(finding_id="W001")
 
 Updates to the TOML file are picked up the next time a new `RuleKnowledgeStore` instance is created (the file is loaded at initialization).
 
+### Installing Language Support
+
+`workflow-clinic` ships with no language parsers installed by default. Install support for the languages you need:
+
+```bash
+pip install "workflow-clinic[nextflow]"   # Nextflow support
+pip install "workflow-clinic[all]"        # everything available
+```
+
+When adding a new parser (see Section 4, "How to Write a New Parser Class"), also add its heavy dependencies to `[project.optional-dependencies]` in `pyproject.toml`, and wrap its registration in `parsers/__init__.py` in a `try/except ImportError` block, following the Nextflow parser as the reference example.
+
 ---
 
 ## 7. Related Files

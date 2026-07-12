@@ -6,7 +6,18 @@ import pytest
 
 from workflow_clinic.exceptions import InvalidWorkflowError, ParserError
 from workflow_clinic.parsers import ParserRegistry
-from workflow_clinic.parsers.nextflow import NextflowParser
+
+try:
+    from workflow_clinic.parsers.nextflow import NextflowParser
+
+    HAS_NEXTFLOW = True
+except ImportError:
+    HAS_NEXTFLOW = False
+    NextflowParser = None  # type: ignore[misc, assignment]
+
+pytestmark = pytest.mark.skipif(
+    not HAS_NEXTFLOW, reason="groovy-parser dependency not installed"
+)
 
 VALID_NF_CONTENT = """
 process FASTQC {

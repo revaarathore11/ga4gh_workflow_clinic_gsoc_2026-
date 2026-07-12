@@ -60,6 +60,16 @@ class ParserRegistry:
             if parser_class.can_parse(path):
                 return parser_name
 
+        # Fallback check for missing optional parser:
+        if "nextflow" not in cls._parsers and (
+            path.suffix == ".nf" or (path.is_dir() and (path / "main.nf").exists())
+        ):
+            err_msg = (
+                "No parser available for Nextflow workflows. "
+                "Install Nextflow support with: pip install 'workflow-clinic[nextflow]'"
+            )
+            raise UnsupportedWorkflowError(err_msg)
+
         msg = f"No registered parser can handle workflow at: {path}"
         raise UnsupportedWorkflowError(msg)
 
