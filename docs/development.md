@@ -205,6 +205,31 @@ Run the suite with:
 pytest tests/test_my_language_parser.py -v
 ```
 
+### Step 6: Declare Dependencies in pyproject.toml
+
+If your parser has external dependencies, isolate them under their own optional group inside `pyproject.toml`:
+
+```toml
+[project.optional-dependencies]
+mylanguage = [
+    "mylanguage-parser>=1.0.0",
+]
+```
+
+To keep aggregate targets up-to-date, also append your language group reference to the `all_parsers` extra:
+
+```toml
+all_parsers = [
+    "workflow-clinic[nextflow]",
+    "workflow-clinic[mylanguage]",
+]
+```
+
+Finally, re-install the package in editable mode to register the entry points and update your environment:
+```bash
+pip install -e ".[dev,mylanguage]"
+```
+
 ---
 
 ## 4. Common Pitfalls
@@ -338,8 +363,6 @@ Updates to the TOML file are picked up the next time a new `RuleKnowledgeStore` 
 pip install "workflow-clinic[nextflow]"   # Nextflow support
 pip install "workflow-clinic[all_parsers]" # everything available
 ```
-
-When adding a new parser (see Section 4, "How to Write a New Parser Class"), also add its dependencies to `[project.optional-dependencies]` in `pyproject.toml`, and perform lazy-loading of these dependencies inside the `parse` method (using a `try/except ModuleNotFoundError` block matching specifically on the package name to prevent swallowing other import errors), following the Nextflow parser as the reference example.
 
 ---
 

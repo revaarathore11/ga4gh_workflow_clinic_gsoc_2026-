@@ -1,9 +1,16 @@
+"""Registry for managing and dynamically detecting workflow parsers.
+
+This module provides the registry class to register, select, and retrieve
+parsers without hardcoding language-specific logic.
+"""
+
 import importlib.metadata
 import logging
 from pathlib import Path
 from typing import ClassVar
 
 from workflow_clinic.exceptions import ParserError, UnsupportedWorkflowError
+from workflow_clinic.models import WorkflowBundle
 from workflow_clinic.parsers.base import BaseParser
 
 logger = logging.getLogger(__name__)
@@ -19,6 +26,31 @@ class ParserRegistry:
     _loaded: ClassVar[bool] = False
 
     @classmethod
+    def _create_placeholder_parser(
+        cls, name: str, error: Exception
+    ) -> type[BaseParser]:
+        """Create a placeholder parser class for a plugin that failed to load."""
+
+        class PlaceholderParser(BaseParser):
+            @classmethod
+            def can_parse(cls, path: Path) -> bool:
+                if name == "nextflow":
+                    return (
+                        path.suffix == ".nf"
+                        or path.name == "nextflow.config"
+                        or (path.is_dir() and (path / "main.nf").exists())
+                    )
+                return False
+
+            def parse(
+                self, _path: Path, _entrypoint: str | None = None
+            ) -> WorkflowBundle:
+                raise error
+
+        PlaceholderParser.__name__ = f"{name.capitalize()}PlaceholderParser"
+        return PlaceholderParser
+
+    @classmethod
     def _load_entry_points(cls) -> None:
         """Dynamically load and register parsers defined as entry points."""
         if cls._loaded:
@@ -32,11 +64,14 @@ class ParserRegistry:
                     parser_class = ep.load()
                     cls.register(ep.name, parser_class)
                     logger.debug("Registered parser '%s' from entry point", ep.name)
-                except Exception:
-                    logger.exception(
-                        "Failed to load parser entry point '%s'",
+                except Exception as e:  # noqa: BLE001
+                    logger.debug(
+                        "Failed to load parser entry point '%s', registering placeholder: %s",
                         ep.name,
+                        e,
                     )
+                    placeholder_class = cls._create_placeholder_parser(ep.name, e)
+                    cls.register(ep.name, placeholder_class)
         except Exception:
             logger.exception("Failed to load parser entry points")
 
