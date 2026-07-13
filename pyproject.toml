@@ -32,8 +32,8 @@ dependencies = [
 nextflow = [
     "groovy-parser>=0.2.2",
 ]
-all = [
-    "workflow-clinic[nextflow]",
+all_parsers = [
+    "groovy-parser>=0.2.2",
 ]
 dev = [
     "pytest>=8.0",

@@ -1,19 +1,15 @@
 """Unit and integration tests for the Nextflow parser."""
 
+import importlib.util
 from pathlib import Path
 
 import pytest
 
 from workflow_clinic.exceptions import InvalidWorkflowError, ParserError
 from workflow_clinic.parsers import ParserRegistry
+from workflow_clinic.parsers.nextflow import NextflowParser
 
-try:
-    from workflow_clinic.parsers.nextflow import NextflowParser
-
-    HAS_NEXTFLOW = True
-except ImportError:
-    HAS_NEXTFLOW = False
-    NextflowParser = None  # type: ignore[misc, assignment]
+HAS_NEXTFLOW = importlib.util.find_spec("groovy_parser") is not None
 
 pytestmark = pytest.mark.skipif(
     not HAS_NEXTFLOW, reason="groovy-parser dependency not installed"

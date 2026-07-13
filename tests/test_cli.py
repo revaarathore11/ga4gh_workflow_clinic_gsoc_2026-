@@ -1,5 +1,6 @@
 """Unit tests for the command-line interface (CLI) options."""
 
+import importlib.util
 import logging
 from pathlib import Path
 
@@ -8,10 +9,9 @@ from typer.testing import CliRunner
 
 from workflow_clinic import __version__
 from workflow_clinic.cli import app
-from workflow_clinic.parsers import ParserRegistry
 
 runner = CliRunner()
-HAS_NEXTFLOW = "nextflow" in ParserRegistry._parsers
+HAS_NEXTFLOW = importlib.util.find_spec("groovy_parser") is not None
 
 
 def test_version_option() -> None:

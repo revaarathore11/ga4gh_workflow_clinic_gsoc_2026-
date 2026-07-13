@@ -11,6 +11,7 @@ from typing import Annotated
 
 import typer
 from rich.console import Console
+from rich.markup import escape
 from rich.table import Table
 
 from workflow_clinic import __version__
@@ -109,7 +110,7 @@ def examine(
     try:
         parser_name = ParserRegistry.detect_parser(path)
     except UnsupportedWorkflowError as e:
-        err_console.print(f"[red]Error:[/red] {e}")
+        err_console.print(f"[red]Error:[/red] {escape(str(e))}")
         raise typer.Exit(code=1) from e
 
     logger.info("Detected parser: %s", parser_name)
@@ -119,7 +120,7 @@ def examine(
     try:
         bundle = parser.parse(path)
     except (InvalidWorkflowError, ParserError) as e:
-        err_console.print(f"[red]Parse error:[/red] {e}")
+        err_console.print(f"[red]Parse error:[/red] {escape(str(e))}")
         raise typer.Exit(code=1) from e
 
     logger.info(

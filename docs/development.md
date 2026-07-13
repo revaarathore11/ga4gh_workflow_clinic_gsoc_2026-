@@ -338,10 +338,10 @@ Updates to the TOML file are picked up the next time a new `RuleKnowledgeStore` 
 
 ```bash
 pip install "workflow-clinic[nextflow]"   # Nextflow support
-pip install "workflow-clinic[all]"        # everything available
+pip install "workflow-clinic[all_parsers]" # everything available
 ```
 
-When adding a new parser (see Section 4, "How to Write a New Parser Class"), also add its heavy dependencies to `[project.optional-dependencies]` in `pyproject.toml`, and wrap its registration in `parsers/__init__.py` in a `try/except ImportError` block, following the Nextflow parser as the reference example.
+When adding a new parser (see Section 4, "How to Write a New Parser Class"), also add its heavy dependencies to `[project.optional-dependencies]` in `pyproject.toml`, and perform lazy-loading of its heavy dependencies inside the `parse` method (using a `try/except ModuleNotFoundError` block matching specifically on the package name to prevent swallowing other import errors), following the Nextflow parser as the reference example.
 
 ---
 

@@ -7,7 +7,6 @@ file, extracting metadata and processes into a standard WorkflowBundle using AST
 from pathlib import Path
 from typing import Any
 
-from groovy_parser.parser import parse_and_digest_groovy_content
 from lark.exceptions import LarkError
 from pydantic import ValidationError
 
@@ -213,6 +212,19 @@ class NextflowParser(BaseParser):
         if not content.strip():
             msg = f"Workflow file is empty: {script_file}"
             raise InvalidWorkflowError(msg)
+
+        try:
+            from groovy_parser.parser import (  # noqa: PLC0415
+                parse_and_digest_groovy_content,
+            )
+        except ModuleNotFoundError as e:
+            if e.name == "groovy_parser":
+                err_msg = (
+                    "Nextflow support not installed. "
+                    "Install with: pip install 'workflow-clinic[nextflow]'"
+                )
+                raise ParserError(err_msg) from e
+            raise
 
         try:
             ast = parse_and_digest_groovy_content(content)
