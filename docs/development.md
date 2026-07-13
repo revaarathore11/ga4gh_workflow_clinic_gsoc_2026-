@@ -175,15 +175,12 @@ structured library instead:
 
 ### Step 3: Register the Parser
 
-Add the import and registration call in `src/workflow_clinic/parsers/__init__.py`:
+Add the parser entry point registration in `pyproject.toml` under the `[project.entry-points."workflow_clinic.parsers"]` table:
 
-```python
-from workflow_clinic.parsers.registry import ParserRegistry
-from workflow_clinic.parsers.nextflow import NextflowParser
-from workflow_clinic.parsers.my_language import MyLanguageParser
-
-ParserRegistry.register("nextflow", NextflowParser)
-ParserRegistry.register("mylanguage", MyLanguageParser)
+```toml
+[project.entry-points."workflow_clinic.parsers"]
+nextflow = "workflow_clinic.parsers.nextflow:NextflowParser"
+mylanguage = "workflow_clinic.parsers.my_language:MyLanguageParser"
 ```
 
 ### Step 4: Map Objects to the Common Schema
@@ -212,11 +209,12 @@ pytest tests/test_my_language_parser.py -v
 
 ## 4. Common Pitfalls
 
-- **Forgetting to register the parser** in
-  `src/workflow_clinic/parsers/__init__.py` — `can_parse()` working in
+- **Forgetting to register the parser entry point** in
+  `pyproject.toml` — `can_parse()` working in
   isolation doesn't mean the registry will find it.
+- **Forgetting to run `pip install -e .`** after adding a new entry point during development so Python registers it in the virtual environment.
 - **Circular imports** — don't import `ParserRegistry` from inside your
-  parser module; register from `__init__.py` instead.
+  parser module.
 - **Swallowing the original exception** — always use
   `raise InvalidWorkflowError(...) from exc`, never a bare
   `raise InvalidWorkflowError(...)`, or you lose the traceback.
@@ -341,7 +339,7 @@ pip install "workflow-clinic[nextflow]"   # Nextflow support
 pip install "workflow-clinic[all_parsers]" # everything available
 ```
 
-When adding a new parser (see Section 4, "How to Write a New Parser Class"), also add its heavy dependencies to `[project.optional-dependencies]` in `pyproject.toml`, and perform lazy-loading of its heavy dependencies inside the `parse` method (using a `try/except ModuleNotFoundError` block matching specifically on the package name to prevent swallowing other import errors), following the Nextflow parser as the reference example.
+When adding a new parser (see Section 4, "How to Write a New Parser Class"), also add its dependencies to `[project.optional-dependencies]` in `pyproject.toml`, and perform lazy-loading of these dependencies inside the `parse` method (using a `try/except ModuleNotFoundError` block matching specifically on the package name to prevent swallowing other import errors), following the Nextflow parser as the reference example.
 
 ---
 
