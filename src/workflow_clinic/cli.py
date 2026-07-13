@@ -121,6 +121,12 @@ def examine(
         bundle = parser.parse(path)
     except (InvalidWorkflowError, ParserError) as e:
         err_console.print(f"[red]Parse error:[/red] {escape(str(e))}")
+        if "not installed" in str(e) or isinstance(e.__cause__, ModuleNotFoundError):
+            install_cmd = f"pip install 'workflow-clinic[{parser_name}]'"
+            err_console.print(
+                f"[bold]Tip:[/bold] Try installing with: "
+                f"[green]{escape(install_cmd)}[/green]"
+            )
         raise typer.Exit(code=1) from e
 
     logger.info(

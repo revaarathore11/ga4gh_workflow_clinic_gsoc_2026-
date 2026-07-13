@@ -31,8 +31,8 @@ def test_nextflow_parser_raises_parser_error_when_groovy_parser_missing(
     with pytest.raises(ParserError) as exc_info:
         parser.parse(nf_file)
 
-    assert "Nextflow support not installed" in str(exc_info.value)
-    assert "pip install 'workflow-clinic[nextflow]'" in str(exc_info.value)
+    assert "Nextflow backend dependencies" in str(exc_info.value)
+    assert "groovy-parser" in str(exc_info.value)
 
 
 def test_cli_raises_actionable_error_when_groovy_parser_missing(
@@ -56,6 +56,6 @@ def test_cli_raises_actionable_error_when_groovy_parser_missing(
     result = runner.invoke(app, ["examine", str(nf_file)])
     assert result.exit_code == 1
 
-    assert "Parse error: Nextflow support not installed" in result.output
+    assert "Parse error: Nextflow backend dependencies" in result.output
     assert "pip install" in result.output
     assert "workflow-clinic[nextflow]" in result.output

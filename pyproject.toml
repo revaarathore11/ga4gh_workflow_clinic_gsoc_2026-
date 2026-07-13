@@ -33,7 +33,7 @@ nextflow = [
     "groovy-parser>=0.2.2",
 ]
 all_parsers = [
-    "groovy-parser>=0.2.2",
+    "workflow-clinic[nextflow]",
 ]
 dev = [
     "pytest>=8.0",
@@ -50,6 +50,9 @@ dev = [
 
 [project.scripts]
 workflow-clinic = "workflow_clinic.main:app"
+
+[project.entry-points."workflow_clinic.parsers"]
+nextflow = "workflow_clinic.parsers.nextflow:NextflowParser"
 
 [project.urls]
 Homepage = "https://github.com/ga4gh/ga4gh_workflow_clinic_gsoc_2026"

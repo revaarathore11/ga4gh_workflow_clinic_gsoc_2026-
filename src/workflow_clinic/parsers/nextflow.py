@@ -219,11 +219,8 @@ class NextflowParser(BaseParser):
             from lark.exceptions import LarkError  # noqa: PLC0415
         except ModuleNotFoundError as e:
             if e.name == "groovy_parser":
-                err_msg = (
-                    "Nextflow support not installed. "
-                    "Install with: pip install 'workflow-clinic[nextflow]'"
-                )
-                raise ParserError(err_msg) from e
+                msg = "Nextflow backend dependencies (groovy-parser) are not installed."
+                raise ParserError(msg) from e
             raise
 
         try:

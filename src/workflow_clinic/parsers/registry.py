@@ -1,14 +1,12 @@
-"""Registry for managing and dynamically detecting workflow parsers.
-
-This module provides the registry class to register, select, and retrieve
-parsers without hardcoding language-specific logic.
-"""
-
+import importlib.metadata
+import logging
 from pathlib import Path
 from typing import ClassVar
 
 from workflow_clinic.exceptions import ParserError, UnsupportedWorkflowError
 from workflow_clinic.parsers.base import BaseParser
+
+logger = logging.getLogger(__name__)
 
 
 class ParserRegistry:
@@ -18,6 +16,29 @@ class ParserRegistry:
     """
 
     _parsers: ClassVar[dict[str, type[BaseParser]]] = {}
+    _loaded: ClassVar[bool] = False
+
+    @classmethod
+    def _load_entry_points(cls) -> None:
+        """Dynamically load and register parsers defined as entry points."""
+        if cls._loaded:
+            return
+        cls._loaded = True
+
+        try:
+            eps = importlib.metadata.entry_points(group="workflow_clinic.parsers")
+            for ep in eps:
+                try:
+                    parser_class = ep.load()
+                    cls.register(ep.name, parser_class)
+                    logger.debug("Registered parser '%s' from entry point", ep.name)
+                except Exception:
+                    logger.exception(
+                        "Failed to load parser entry point '%s'",
+                        ep.name,
+                    )
+        except Exception:
+            logger.exception("Failed to load parser entry points")
 
     @classmethod
     def register(cls, name: str, parser_class: type[BaseParser]) -> None:
@@ -56,6 +77,8 @@ class ParserRegistry:
             msg = f"Path does not exist: {path}"
             raise ParserError(msg)
 
+        cls._load_entry_points()
+
         for parser_name, parser_class in cls._parsers.items():
             if parser_class.can_parse(path):
                 return parser_name
@@ -76,6 +99,8 @@ class ParserRegistry:
         Raises:
             ParserError: If parser name is not registered
         """
+        cls._load_entry_points()
+
         if name not in cls._parsers:
             available = ", ".join(cls._parsers.keys())
             msg = f"Parser '{name}' not registered. Available parsers: {available}"
