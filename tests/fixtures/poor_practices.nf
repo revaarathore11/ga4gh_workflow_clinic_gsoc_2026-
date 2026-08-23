@@ -11,6 +11,7 @@ params.reads  = "$baseDir/data/*_R{1,2}.fastq.gz"
 params.outdir = "results"
 
 process NO_CONTAINER {
+    container "quay.io/biocontainers/ubuntu:22.04"  // TODO: Replace with specific tool image (e.g. biocontainers/samtools:1.17)
     cpus 1
     memory "4 GB"
 
@@ -27,7 +28,7 @@ process NO_CONTAINER {
 }
 
 process UNPINNED_TAG {
-    container "ubuntu:latest"
+    container "ubuntu:22.04"
     cpus 4
     memory "8 GB"
 
@@ -59,7 +60,7 @@ process NO_RESOURCES {
 }
 
 process TAGLESS_IMAGE {
-    container "ubuntu"
+    container "ubuntu:22.04"
     cpus 2
     memory "4 GB"
 
