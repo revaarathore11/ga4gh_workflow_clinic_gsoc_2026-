@@ -44,6 +44,7 @@ process UNPINNED_TAG {
 }
 
 process NO_RESOURCES {
+    cpus 1  // TODO: Adjust based on tool multi-threading requirements
     container "quay.io/biocontainers/samtools:1.17--hd87286a_2"
 
     input:
